@@ -8,5 +8,5 @@ export const projectEndpoints = {
     deleteProjectApi: (id) => `${Base_URL}${id}/delete`, 
     getProjectsApi: `${Base_URL}`, 
     getProjectByIdApi: (id) => `${Base_URL}${id}` ,
-    deleteAllProjectsApi:`${Base_URL}/deleteAll`
+    deleteAllProjectsApi:`${Base_URL}deleteAll`
 };
