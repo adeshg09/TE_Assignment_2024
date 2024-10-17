@@ -25,13 +25,13 @@ export default function HomePage() {
           <ProjectTable projects={projects} isLoading={isLoading} />
         </div>
       </div>
-      {projects.length > 0 && (
+      {projects.length > 1 && (
                 <div className="flex justify-end lg:mx-32">
                     <Button variant="destructive" onClick={() => setIsDeleteAllModalOpen(true)}>Delete All Projects</Button>
                 </div>
             )}
       <AddProjectModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} />
-      <DeleteAllProjectsModal isOpen={isDeleteAllModalOpen} onClose={() => setIsDeleteAllModalOpen(false)} /> {/* Add the modal here */}
+      <DeleteAllProjectsModal isOpen={isDeleteAllModalOpen} onClose={() => setIsDeleteAllModalOpen(false)} /> 
     </div>
   )
 }
