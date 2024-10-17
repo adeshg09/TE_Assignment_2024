@@ -6,7 +6,8 @@ const {
     getProjectsApi,
     addProjectApi,
     editProjectApi,
-    deleteProjectApi
+    deleteProjectApi,
+    deleteAllProjectsApi
 } = projectEndpoints;
 
 export const getAllProjects = async () => {
@@ -86,4 +87,23 @@ export const deleteProject = async (id) => {
         toast.error(e.message || "Error deleting project", { id: toastId });
         toast.dismiss(toastId);
     }
+};
+
+
+export const deleteAllProjects = async () => {
+    const toastId = toast.loading("Deleting all projects...");
+
+    try {
+        const response = await apiConnector("DELETE", deleteAllProjectsApi);
+        if (!response?.data?.success) {
+            throw new Error(response?.data?.message || "Failed to delete all projects");
+        }
+        toast.success("All projects deleted successfully", { id: toastId });
+    } catch (e) {
+        console.log("DeleteAllProjects Api Error", e);
+        toast.error(e.message || "Error deleting all projects", { id: toastId });
+    } finally {
+        toast.dismiss(toastId);
+    }
+
 };

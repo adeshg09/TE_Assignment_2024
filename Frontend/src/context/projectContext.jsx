@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { addProject, getAllProjects, updateProject, deleteProject } from '../services/operations/projectApi';
+import { addProject, getAllProjects, updateProject, deleteProject, deleteAllProjects } from '../services/operations/projectApi';
 
 
 export const ProjectContext = createContext();
@@ -10,15 +10,15 @@ export const ProjectProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterOption, setFilterOption] = useState('latest'); 
-  const [isLoading, setIsLoading] = useState(true); 
+  const [filterOption, setFilterOption] = useState('latest');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchProjects = async () => {
-      setIsLoading(true); 
+      setIsLoading(true);
       try {
-   
-        await new Promise(resolve => setTimeout(resolve, 2000)); 
+
+        await new Promise(resolve => setTimeout(resolve, 2000));
 
         const res = await getAllProjects();
         if (res && res.success) {
@@ -29,7 +29,7 @@ export const ProjectProvider = ({ children }) => {
       } catch (error) {
         console.error("Error fetching projects: " + error.message);
       } finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     };
 
@@ -43,7 +43,7 @@ export const ProjectProvider = ({ children }) => {
       result = result.filter(project =>
         project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.skillSet.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase())) || 
+        project.skillSet.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase())) ||
         project.noOfMembers.toString().includes(searchTerm) ||
         project.isActive.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
         new Date(project.createdAt).toLocaleDateString().includes(searchTerm)
@@ -52,15 +52,15 @@ export const ProjectProvider = ({ children }) => {
 
     switch (filterOption) {
       case 'latest':
-        result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); 
+        result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         break;
       case 'nameAZ':
         result.sort((a, b) => a.name.localeCompare(b.name));
         break;
       case 'members':
         result.sort((a, b) => {
-          const aMembers = parseInt(a.noOfMembers, 10) || 0; 
-          const bMembers = parseInt(b.noOfMembers, 10) || 0; 
+          const aMembers = parseInt(a.noOfMembers, 10) || 0;
+          const bMembers = parseInt(b.noOfMembers, 10) || 0;
           return bMembers - aMembers;
         });
         break;
@@ -93,13 +93,19 @@ export const ProjectProvider = ({ children }) => {
         project._id === id ? { ...project, ...res.data } : project
       ));
     } else {
-      console.log( `Failed to update Project with id ${id}`)
+      console.log(`Failed to update Project with id ${id}`)
     }
   };
 
   const deleteCreatedProject = async (id) => {
     await deleteProject(id);
     setProjects(projects.filter(project => project._id !== id));
+  };
+
+  const deleteAllTheProjects = async () => {
+    await deleteAllProjects();
+    setProjects([]);
+
   };
 
   return (
@@ -112,7 +118,8 @@ export const ProjectProvider = ({ children }) => {
       setFilterOption,
       addProject: addNewProject,
       updateOldProject,
-      deleteCreatedProject
+      deleteCreatedProject,
+      deleteAllTheProjects
     }}>
       {children}
     </ProjectContext.Provider>

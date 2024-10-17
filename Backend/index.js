@@ -10,13 +10,13 @@ console.log('PORT:', process.env.PORT);
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Define the allowed origins
+
 const allowedOrigins = [
     'https://te-assignment-2024-frontend.vercel.app',
     'http://localhost:5173'
 ];
 
-// Dynamic CORS options
+
 const corsOptions = {
     origin: (origin, callback) => {
     
