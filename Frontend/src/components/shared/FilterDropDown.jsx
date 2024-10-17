@@ -11,12 +11,12 @@ export default function FilterDropdown() {
   const { filterOption, setFilterOption } = useProjectContext();
 
   return (
-    <Select
-      value={filterOption}
-      onValueChange={(value) => setFilterOption(value)}
-    >
+    <Select onValueChange={setFilterOption}>
       <SelectTrigger className="w-full sm:w-64 focus:outline-none focus:border-none">
-        <SelectValue placeholder="Filter by" />
+        <SelectValue 
+          placeholder="Filter by" 
+          className={`text-black ${!filterOption ? 'opacity-50' : ''}`} 
+        />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="members">Most Members</SelectItem>

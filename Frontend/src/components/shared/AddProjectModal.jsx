@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { useEffect, useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -19,18 +19,16 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-
 const schema = Yup.object().shape({
   name: Yup.string().required('Project Name is required'),
   description: Yup.string().required('Project Description is required'),
-  skillSet: Yup.array().min(1, 'At least one skill is required'),
+  skillSet: Yup.array().min(1, 'At least one skill is required').max(5, 'You can select up to 5 skills only'),
   noOfMembers: Yup.string().required('Number of Members is required'),
 });
 
 export default function AddProjectModal({ isOpen, onClose }) {
   const { addProject } = useProjectContext();
-  
- 
+  const [skillError, setSkillError] = useState('');
   const { control, handleSubmit, formState: { errors }, reset, setValue, trigger } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -42,16 +40,14 @@ export default function AddProjectModal({ isOpen, onClose }) {
     },
   });
 
-
   useEffect(() => {
     if (!isOpen) {
-      reset(); 
+      reset();
     }
   }, [isOpen, reset]);
 
   const skillSetOptionsFormatted = skillSetOptions.map(skill => ({ label: skill, value: skill }));
 
- 
   const onSubmit = (data) => {
     addProject({
       ...data,
@@ -62,7 +58,7 @@ export default function AddProjectModal({ isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="lg:max-w-[400px] max-w-[350px]  rounded-lg ">
         <DialogHeader className="flex items-center justify-center">
           <DialogTitle className="font-bold">Add New Project</DialogTitle>
         </DialogHeader>
@@ -103,19 +99,30 @@ export default function AddProjectModal({ isOpen, onClose }) {
               control={control}
               name="skillSet"
               render={({ field }) => (
-                <MultiSelect
-                  options={skillSetOptionsFormatted}
-                  value={skillSetOptionsFormatted.filter(option => field.value.includes(option.value))}
-                  onChange={(selected) => {
-                    field.onChange(selected.map(option => option.value));
-                    setValue('skillSet', selected.map(option => option.value)); 
-                    trigger('skillSet');
-                  }}
-                  labelledBy="Select Skills"
-                />
+                <div>
+                  <MultiSelect
+                    className='max-w-full'
+                    options={skillSetOptionsFormatted}
+                    value={skillSetOptionsFormatted.filter(option => field.value.includes(option.value))}
+                    onChange={(selected) => {
+                      if (selected.length > 5) {
+                        setSkillError('You can select up to 5 skills only');
+                      } else {
+                        setSkillError('');
+                        field.onChange(selected.map(option => option.value));
+                        setValue('skillSet', selected.map(option => option.value));
+                        trigger('skillSet');
+                      }
+                    }}
+                    labelledBy="Select Skills"
+                    hasSelectAll={false}
+                  />
+
+                  {skillError && <p className="text-red-500">{skillError}</p>}
+                  {errors.skillSet && <p className="text-red-500">{errors.skillSet.message}</p>}
+                </div>
               )}
             />
-            {errors.skillSet && <p className="text-red-500">{errors.skillSet.message}</p>}
           </div>
           <div>
             <Label htmlFor="noOfMembers">Number of Members</Label>
@@ -152,10 +159,14 @@ export default function AddProjectModal({ isOpen, onClose }) {
             />
             <Label htmlFor="isActive">Is Active?</Label>
           </div>
-          <DialogFooter>
+
+          <div className='flex items-center justify-center space-x-6 lg:justify-center'>
             <Button type="submit">Add Project</Button>
             <Button type="button" onClick={onClose}>Back</Button>
-          </DialogFooter>
+
+          </div>
+
+
         </form>
       </DialogContent>
     </Dialog>
