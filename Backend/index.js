@@ -11,7 +11,13 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 
-app.use(cors());
+app.use(cors(
+    {
+        origin:["https://te-assignment-2024-frontend.vercel.app"],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials:true
+    }
+));
 
 app.use(express.json());
 
