@@ -39,7 +39,7 @@ export default function ProjectTable({ projects, isLoading }) {
       </div>
 
     
-      <div className="overflow-auto max-h-[600px]">
+      <div className="overflow-auto max-h-[300px]">
         <Table>
           <TableBody className="bg-white">
             {isLoading ? (
