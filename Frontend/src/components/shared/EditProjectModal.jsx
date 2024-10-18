@@ -170,7 +170,7 @@ export default function EditProjectModal({ project, isOpen, onClose }) {
             <Label htmlFor="isActive">Is Active?</Label>
           </div>
           <div className='flex items-center justify-center space-x-6 lg:justify-center'>
-            <Button type="submit">Add Project</Button>
+            <Button type="submit">Update Project</Button>
             <Button type="button" onClick={onClose}>Back</Button>
 
           </div>
