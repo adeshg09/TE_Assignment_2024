@@ -1,5 +1,5 @@
 
-const Base_URL ="https://te-assignment-2024-backend-un5q.onrender.com/api/v1/projects/"
+const Base_URL ="https://te-assignment-2024backend.onrender.com/"
 
 
 export const projectEndpoints = {
