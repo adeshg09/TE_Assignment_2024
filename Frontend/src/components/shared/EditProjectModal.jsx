@@ -115,8 +115,8 @@ export default function EditProjectModal({ project, isOpen, onClose }) {
                     options={skillSetOptionsFormatted}
                     value={skillSetOptionsFormatted.filter(option => field.value.includes(option.value))}
                     onChange={(selected) => {
-                      if (selected.length > 5) {
-                        setSkillError('You can select up to 5 skills only');
+                      if (selected.length > 4) {
+                        setSkillError('You can select up to 4 skills only');
                       } else {
                         setSkillError('');
                         field.onChange(selected.map(option => option.value));
