@@ -60,10 +60,15 @@ This project is a web application for managing projects, featuring both a fronte
 
 ## Environment Variables
 
-Create a `.env` file in the backend directory with the following:
+Create a `.env` file in the Backend directory with the following:
 ```
 DATABASE_URL=your_database_url
 PORT=your_port_number
+
+```
+Create a `.env` file in the Frontend directory with the following:
+```
+VITE_BACKEND_URL=your_backend_url
 ```
 
 
