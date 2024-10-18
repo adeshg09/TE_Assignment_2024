@@ -11,26 +11,12 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 
-const allowedOrigins = [
-    'https://te-assignment-2024-frontend.vercel.app',
-    'http://localhost:5173'
-];
 
-
-const corsOptions = {
-    origin: (origin, callback) => {
-    
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true); 
-        } else {
-            callback(new Error('Not allowed by CORS')); 
-        }
-    },
-    credentials: true,
-};
 
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors({
+    "https://te-assignment-2024-frontend.vercel.app",
+}));
 
 connectToDB();
 

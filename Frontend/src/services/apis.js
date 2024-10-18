@@ -1,5 +1,5 @@
 
-const Base_URL = "https://te-assignment-2024.vercel.app/api/v1/projects/"
+const Base_URL =import.meta.env.VITE_BACKEND_URL || " https://te-assignment-2024.vercel.app/api/v1/projects/ "
 
 
 export const projectEndpoints = {
